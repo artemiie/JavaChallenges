@@ -1,0 +1,37 @@
+В этом задании необходимо реализовать парсинг HTTP лога.
+
+Формат строки: уровень [поток] текст.
+
+Например: WARNING [threads [zqfz [wbye [zfq]]] - 1] wqqa [e] zqw
+
+
+
+public class LogLine {
+    public record Line(String level, String threads, String text) { }
+
+    public Line parse(String text) {
+        return new Line("", "", "");
+    }
+}
+
+
+Тест
+
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.Matchers.is;
+import org.junit.Test;
+
+public class LogLineTest {
+    @Test
+    public void whenParseSingleLine() {
+        var line = new LogLine().parse(
+                "WARNING [threads [zqfz [wbye [zfq]]] - 1] wqqa [e] zqw"
+        );
+        assertThat(line.level(),
+                is("WARNING"));
+        assertThat(line.threads(),
+                is("[threads [zqfz [wbye [zfq]]] - 1]"));
+        assertThat(line.text(),
+                is("wqqa [e] zqw"));
+    }
+}
